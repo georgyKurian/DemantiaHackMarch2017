@@ -11,6 +11,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
@@ -33,6 +35,9 @@ public class Login {
     private String password;
     int userid;
     boolean isLogedIn;
+    List<Question> questions;
+    Question currentquestion;
+    int index;
 
     public Login() {
         isLogedIn = false;
@@ -82,6 +87,14 @@ public class Login {
         this.password = password;
     }
 
+    public List<Question> getQuestions() {
+        return questions;
+    }
+
+    public Question getCurrentquestion() {
+        return currentquestion;
+    }
+
     public String login() {
 
         String dbuser = "";
@@ -108,7 +121,24 @@ public class Login {
             isLogedIn = true;
             userid = id;
             if (id == 1) {
-                return "usersuccess";
+                try {
+                    questions = new ArrayList();
+                    
+                    ps = con.prepareStatement("SELECT id,question,correct_answer FROM question");
+                    ResultSet rs = ps.executeQuery();
+                    while (rs.next()) {
+                        Question q = new Question(
+                                rs.getInt("id"),
+                                rs.getString("question"),
+                                rs.getInt("correct_answer")
+                        );
+                        questions.add(q);
+                    }
+                    index = 0;
+                    return directPage();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+                }
             } else if (id == 2) {
                 return "adminHome";
             }
@@ -117,6 +147,23 @@ public class Login {
         FacesContext context = FacesContext.getCurrentInstance();
         context.addMessage("error", message);
         return "failure";
+    }
+    
+    public String directPage(){
+        getNextQuestion();
+        if(currentquestion != null )
+            return "usersuccess";
+        else
+            return "";
+    }
+
+    public void getNextQuestion() {
+        if (questions.size() > index) {
+            currentquestion = questions.get(index);
+        } 
+        else
+            currentquestion = null;
+                
     }
 
 }

@@ -1,7 +1,8 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <title>Facelet Title</title>
 		<link href="../MyStyle/bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
@@ -20,25 +21,46 @@
             <div class="col-sm-12 col-lg-6">
                 <div class="panel panel-default" style="margin:50px auto; text-align:center;">
                     <div class="panel-heading">
-                        <i class="fa fa-question-circle fa-fw"></i><label class="panel-title" style="font-size:40px"> What is your favorite color?</label>
+                        <i class="fa fa-question-circle fa-fw"></i>
+                        <label class="panel-title" style="font-size:40px"> #{login.currentquestion.question}</label>
                     </div>
-                    <div class="panel-body">
-                        <div class="row">
+                    <div id="" class="panel-body">
+                        <h:form>
+                      <!--  <div class="row">
                             <div class="col-sm-12 col-lg-6" style="margin-top:20px">
-                                <input type="image" src="../images/image.jpg" style="width:100%" alt="Submit"/>
+                                <input id="1"  type="image" src="../images/image.jpg" style="width:100%"  alt="Submit"/>
                             </div>
                             <div class="col-sm-12 col-lg-6" style="margin-top:20px">
-                                <input type="image" src="../images/image.jpg" style="width:100%" alt="Submit"/>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-12 col-lg-6" style="margin-top:20px">
-                                <input type="image" src="../images/image.jpg" style="width:100%" alt="Submit"/>
-                            </div>
-                            <div class="col-sm-12 col-lg-6" style="margin-top:20px">
-                                <input type="image" src="../images/image.jpg" style="width:100%" alt="Submit"/>
+                                <input id="2"  type="image" src="../images/image.jpg" style="width:100%"  alt="Submit"/>
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="col-sm-12 col-lg-6" style="margin-top:20px">
+                                <input id="3" type="image" src="../images/image.jpg" style="width:100%" alt="Submit"/>
+                            </div>
+                            <div class="col-sm-12 col-lg-6" style="margin-top:20px">
+                                <input id="4" type="image" src="../images/image.jpg" style="width:100%" alt="Submit"/>
+                            </div>
+                        </div>-->
+                      <h:dataTable class="table table-bordered table-hover table-striped" value="#{login.questions}" var="q">
+                            <h:column>
+                                <f:facet name="header">Patient ID</f:facet>
+                                    #{q.id}
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">Name</f:facet>
+                                    #{q.question}
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">Age</f:facet>
+                                    #{q.correct_answer}
+                            </h:column>
+                    
+                            <h:column>
+                                <h:commandButton value="Details" style="width:100%;" />
+                            </h:column>
+                        </h:dataTable>
+                        </h:form>
                     </div>
                 </div>
             </div>
