@@ -12,9 +12,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
 
 /**
@@ -107,9 +109,12 @@ public class Login {
             if (id == 1) {
                 return "usersuccess";
             } else if (id == 2) {
-                return "adminsuccess";
+                return "adminHome";
             }
         }
+        FacesMessage message = new FacesMessage("Invalid password length");
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.addMessage("error", message);
         return "failure";
     }
 

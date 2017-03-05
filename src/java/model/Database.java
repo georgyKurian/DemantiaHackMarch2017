@@ -47,7 +47,7 @@ public class Database {
 //        String password = "Pv2cUljhTZ";
 //        String jdbc = String.format("jdbc:mysql://%s:%s/%s", hostname, port, dbname);
         
-        String hostname = "172.18.1.79";
+        String hostname = "localhost";
         String port = "3306";
         String dbname = "demantia";
         String username = "demantia";
