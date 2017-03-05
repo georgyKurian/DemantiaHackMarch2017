@@ -14,6 +14,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.inject.Named;
 
 /**
@@ -22,34 +23,46 @@ import javax.inject.Named;
  */
 @ManagedBean
 @Named
-@ApplicationScoped
+@SessionScoped
 public class Login {
- 
-private String username;
-private String password;
-int userid;
- 
 
-/**
-* @return the username
-*/
-public String getUsername() {
-return username;
-}
- 
-/**
-* @param username the username to set
-*/
-public void setUsername(String username) {
-this.username = username;
-}
- 
-/**
-* @return the password
-*/
-public String getPassword() {
-return password;
-}
+    private String username;
+    private String password;
+    int userid;
+    boolean isLogedIn;
+
+    public Login() {
+        isLogedIn = false;
+    }
+
+    /**
+     * @return the username
+     */
+    public String getUsername() {
+        return username;
+    }
+
+    /**
+     * @param username the username to set
+     */
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public boolean isIsLogedIn() {
+        return isLogedIn;
+    }
+
+    public void setIsLogedIn(boolean isLogedIn) {
+        this.isLogedIn = isLogedIn;
+    }
+
+    /**
+     * @return the password
+     */
+    public String getPassword() {
+        return password;
+    }
 
     public int getUserid() {
         return userid;
@@ -58,47 +71,46 @@ return password;
     public void setUserid(int userid) {
         this.userid = userid;
     }
- 
-/**
-* @param password the password to set
-*/
-public void setPassword(String password) {
-this.password = password;
-}
- 
-public String login() {
-   
-    String dbuser ="";
-    String dbpass = "";
-    PreparedStatement ps = null;
-    Connection con = null;
-    int id = -1;
-    try {
-        con= Database.getCoonnection();
-        ps = con.prepareStatement("SELECT username, password, user_type FROM login where username=? and password=? ");
-       ps.setString(1, username);
-       ps.setString(2, password);
-        ResultSet rs = ps.executeQuery();
-        while (rs.next()){
-            dbuser = rs.getString("username");
-            dbpass = rs.getString("password");
-            id = rs.getInt("user_type");
-        }
-       
-        
-    } catch (SQLException ex) {
-        Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-    }
-if(username.equals(dbuser) && password.equals(dbpass)){
-    if(id == 1){
-         return "usersuccess";
-    }
-    else if(id == 2){
-        return "adminsuccess";
-    }
-}
-     return "failure";
-}
- 
-}
 
+    /**
+     * @param password the password to set
+     */
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String login() {
+
+        String dbuser = "";
+        String dbpass = "";
+        PreparedStatement ps = null;
+        Connection con = null;
+        int id = -1;
+        try {
+            con = Database.getCoonnection();
+            ps = con.prepareStatement("SELECT username, password, user_type FROM login where username=? and password=? ");
+            ps.setString(1, username);
+            ps.setString(2, password);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                dbuser = rs.getString("username");
+                dbpass = rs.getString("password");
+                id = rs.getInt("user_type");
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if (username.equals(dbuser) && password.equals(dbpass)) {
+            isLogedIn = true;
+            userid = id;
+            if (id == 1) {
+                return "usersuccess";
+            } else if (id == 2) {
+                return "adminsuccess";
+            }
+        }
+        return "failure";
+    }
+
+}
