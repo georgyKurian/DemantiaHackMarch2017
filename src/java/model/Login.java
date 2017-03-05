@@ -38,6 +38,9 @@ public class Login {
     List<Question> questions;
     Question currentquestion;
     int index;
+    PreparedStatement ps = null;
+    Connection con = null;
+       
 
     public Login() {
         isLogedIn = false;
@@ -99,9 +102,8 @@ public class Login {
 
         String dbuser = "";
         String dbpass = "";
-        PreparedStatement ps = null;
-        Connection con = null;
         int id = -1;
+        index=0;
         try {
             con = Database.getCoonnection();
             ps = con.prepareStatement("SELECT username, password, user_type FROM login where username=? and password=? ");
@@ -121,7 +123,22 @@ public class Login {
             isLogedIn = true;
             userid = id;
             if (id == 1) {
-                try {
+                    //return getindex();
+                    return directPage();
+                    
+               
+            } else if (id == 2) {
+                return "adminHome";
+            }
+        }
+        FacesMessage message = new FacesMessage("Invalid password length");
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.addMessage("error", message);
+        return "failure";
+    }
+    
+    public void getindex(){
+        try {
                     questions = new ArrayList();
                     
                     ps = con.prepareStatement("SELECT id,question,correct_answer FROM question");
@@ -134,36 +151,33 @@ public class Login {
                         );
                         questions.add(q);
                     }
-                    index = 0;
-                    return directPage();
-                } catch (SQLException ex) {
-                    Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            } else if (id == 2) {
-                return "adminHome";
             }
-        }
-        FacesMessage message = new FacesMessage("Invalid password length");
-        FacesContext context = FacesContext.getCurrentInstance();
-        context.addMessage("error", message);
-        return "failure";
+             catch (SQLException ex) {
+                    Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        
     }
     
     public String directPage(){
-        getNextQuestion();
+        getindex();
+        index = getNextQuestion(index);
         if(currentquestion != null )
             return "usersuccess";
         else
-            return "";
+            return "index";
     }
 
-    public void getNextQuestion() {
+    public int getNextQuestion(int index) {
         if (questions.size() > index) {
             currentquestion = questions.get(index);
+            index= index + 1;
         } 
         else
-            currentquestion = null;
-                
+        {
+            currentquestion = null;    
+            index=-1;
+        }
+        return index;
     }
 
 }

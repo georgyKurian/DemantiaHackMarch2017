@@ -17,6 +17,11 @@
     </h:head>
     <h:body>
         <center class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header"> <input type="button" class="btn btn-danger pull-right" value="Logout" /></h1>
+                </div>
+            </div>
         <div  style="width:100%">
             <div class="col-sm-12 col-lg-6">
                 <div class="panel panel-default" style="margin:50px auto; text-align:center;">
@@ -26,6 +31,7 @@
                     </div>
                     <div id="" class="panel-body">
                         <h:form>
+                            <h:commandButton value="Details" style="width:100%;"  action="#{login.directPage()}"/>
                       <!--  <div class="row">
                             <div class="col-sm-12 col-lg-6" style="margin-top:20px">
                                 <input id="1"  type="image" src="../images/image.jpg" style="width:100%"  alt="Submit"/>
@@ -42,24 +48,24 @@
                                 <input id="4" type="image" src="../images/image.jpg" style="width:100%" alt="Submit"/>
                             </div>
                         </div>-->
-                      <h:dataTable class="table table-bordered table-hover table-striped" value="#{login.questions}" var="q">
+                 <!--     <h:dataTable class="table table-bordered table-hover table-striped" value="#{login.questions}" var="q">
                             <h:column>
                                 <f:facet name="header">Patient ID</f:facet>
-                                    #{q.id}
+                                    {q.id}
                             </h:column>
                             <h:column>
                                 <f:facet name="header">Name</f:facet>
-                                    #{q.question}
+                                    {q.question}
                             </h:column>
                             <h:column>
                                 <f:facet name="header">Age</f:facet>
-                                    #{q.correct_answer}
+                                    {q.correct_answer}
                             </h:column>
                     
                             <h:column>
                                 <h:commandButton value="Details" style="width:100%;" />
                             </h:column>
-                        </h:dataTable>
+                        </h:dataTable> -->
                         </h:form>
                     </div>
                 </div>
